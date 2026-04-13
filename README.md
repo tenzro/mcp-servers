@@ -10,7 +10,7 @@ Open-source [Model Context Protocol](https://modelcontextprotocol.io) servers fo
 
 | Server | Tools | Description | Live Endpoint |
 |--------|-------|-------------|--------------|
-| [Tenzro](tenzro/) | 109 | Tenzro L1 — wallets, identity, tokens, NFTs, agents, governance | `mcp.tenzro.network/mcp` |
+| [Tenzro](tenzro/) | 146 | Tenzro L1 — wallets, identity, tokens, NFTs, agents, crypto, TEE, ZK, custody | `mcp.tenzro.network/mcp` |
 | [Solana](solana/) | 14 | Jupiter swaps, SPL tokens, Metaplex NFTs, staking, SNS | `solana-mcp.tenzro.network/mcp` |
 | [Ethereum](ethereum/) | 16 | Gas, ENS, ERC-20, EAS attestations, ERC-8004 agents | `ethereum-mcp.tenzro.network/mcp` |
 | [Canton](canton/) | 14 | DAML contracts, CIP-56 tokens, DvP settlement | `canton-mcp.tenzro.network/mcp` |
@@ -18,7 +18,7 @@ Open-source [Model Context Protocol](https://modelcontextprotocol.io) servers fo
 | [Chainlink](chainlink/) | 20 | CCIP, data feeds, VRF, automation, Functions | `chainlink-mcp.tenzro.network/mcp` |
 | [LI.FI](lifi/) | 9 | Cross-chain aggregator — 66 chains, quotes, routes, swaps | `lifi-mcp.tenzro.network/mcp` |
 
-**Total: 202 tools across 7 servers**
+**Total: 239 tools across 7 servers**
 
 Also integrates with official hosted MCPs:
 - [deBridge](https://agents.debridge.com/mcp) — 5 tools (cross-chain DLN swaps)
@@ -42,12 +42,12 @@ Or connect to the live Tenzro testnet endpoints directly — no installation nee
 ```json
 {
   "mcpServers": {
-    "tenzro": { "url": "https://mcp.tenzro.network/mcp" },
-    "tenzro-solana": { "url": "https://solana-mcp.tenzro.network/mcp" },
-    "tenzro-ethereum": { "url": "https://ethereum-mcp.tenzro.network/mcp" },
-    "tenzro-lifi": { "url": "https://lifi-mcp.tenzro.network/mcp" },
-    "tenzro-layerzero": { "url": "https://layerzero-mcp.tenzro.network/mcp" },
-    "tenzro-chainlink": { "url": "https://chainlink-mcp.tenzro.network/mcp" }
+    "tenzro": { "command": "npx", "args": ["-y", "mcp-remote", "https://mcp.tenzro.network/mcp"] },
+    "tenzro-solana": { "command": "npx", "args": ["-y", "mcp-remote", "https://solana-mcp.tenzro.network/mcp"] },
+    "tenzro-ethereum": { "command": "npx", "args": ["-y", "mcp-remote", "https://ethereum-mcp.tenzro.network/mcp"] },
+    "tenzro-lifi": { "command": "npx", "args": ["-y", "mcp-remote", "https://lifi-mcp.tenzro.network/mcp"] },
+    "tenzro-layerzero": { "command": "npx", "args": ["-y", "mcp-remote", "https://layerzero-mcp.tenzro.network/mcp"] },
+    "tenzro-chainlink": { "command": "npx", "args": ["-y", "mcp-remote", "https://chainlink-mcp.tenzro.network/mcp"] }
   }
 }
 ```

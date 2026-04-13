@@ -1,4 +1,4 @@
-"""Tenzro Network MCP Server — 104 blockchain tools for AI agents.
+"""Tenzro Network MCP Server — 141 blockchain tools for AI agents.
 
 Exposes the full Tenzro Network JSON-RPC interface as MCP tools,
 enabling AI agents to interact with the Tenzro L1 settlement layer,
@@ -1211,6 +1211,303 @@ async def get_skill_usage(skill_id: str) -> str:
 async def get_tool_usage(tool_id: str) -> str:
     """Get usage statistics for a registered tool."""
     result = await rpc_call("tenzro_getToolUsage", [tool_id])
+    return json.dumps(result)
+
+
+# ---------------------------------------------------------------------------
+# Crypto (9 tools)
+# ---------------------------------------------------------------------------
+
+
+@mcp.tool
+async def sign_message(private_key: str, message_hex: str, key_type: str = "ed25519") -> str:
+    """Sign a message with Ed25519 or Secp256k1 private key."""
+    result = await rpc_call("tenzro_signMessage", {"private_key": private_key, "message_hex": message_hex, "key_type": key_type})
+    return json.dumps(result)
+
+
+@mcp.tool
+async def verify_signature(public_key: str, message_hex: str, signature_hex: str, key_type: str = "ed25519") -> str:
+    """Verify a signature against a message and public key."""
+    result = await rpc_call("tenzro_verifySignature", {"public_key": public_key, "message_hex": message_hex, "signature_hex": signature_hex, "key_type": key_type})
+    return json.dumps(result)
+
+
+@mcp.tool
+async def encrypt_data(plaintext_hex: str, key_hex: str) -> str:
+    """Encrypt data using AES-256-GCM. Returns ciphertext with nonce and tag."""
+    result = await rpc_call("tenzro_encryptData", {"plaintext_hex": plaintext_hex, "key_hex": key_hex})
+    return json.dumps(result)
+
+
+@mcp.tool
+async def decrypt_data(ciphertext_hex: str, key_hex: str) -> str:
+    """Decrypt AES-256-GCM encrypted data. Input must include nonce and tag."""
+    result = await rpc_call("tenzro_decryptData", {"ciphertext_hex": ciphertext_hex, "key_hex": key_hex})
+    return json.dumps(result)
+
+
+@mcp.tool
+async def derive_key(seed_hex: str, path: str) -> str:
+    """Derive a child key from a seed using the given derivation path."""
+    result = await rpc_call("tenzro_deriveKey", {"seed_hex": seed_hex, "path": path})
+    return json.dumps(result)
+
+
+@mcp.tool
+async def generate_keypair(key_type: str = "ed25519") -> str:
+    """Generate a new cryptographic keypair (ed25519 or secp256k1). Returns public and private key hex."""
+    result = await rpc_call("tenzro_generateKeypair", {"key_type": key_type})
+    return json.dumps(result)
+
+
+@mcp.tool
+async def hash_sha256(data_hex: str) -> str:
+    """Compute SHA-256 hash of hex-encoded data."""
+    result = await rpc_call("tenzro_hashSha256", {"data_hex": data_hex})
+    return json.dumps(result)
+
+
+@mcp.tool
+async def hash_keccak256(data_hex: str) -> str:
+    """Compute Keccak-256 hash of hex-encoded data."""
+    result = await rpc_call("tenzro_hashKeccak256", {"data_hex": data_hex})
+    return json.dumps(result)
+
+
+@mcp.tool
+async def x25519_key_exchange(private_key_hex: str, peer_public_key_hex: str) -> str:
+    """Perform X25519 Diffie-Hellman key exchange. Returns shared secret."""
+    result = await rpc_call("tenzro_x25519KeyExchange", {"private_key_hex": private_key_hex, "peer_public_key_hex": peer_public_key_hex})
+    return json.dumps(result)
+
+
+# ---------------------------------------------------------------------------
+# TEE (6 tools)
+# ---------------------------------------------------------------------------
+
+
+@mcp.tool
+async def detect_tee() -> str:
+    """Detect available TEE hardware on the current node (TDX, SEV-SNP, Nitro, GPU CC)."""
+    result = await rpc_call("tenzro_detectTee", [])
+    return json.dumps(result)
+
+
+@mcp.tool
+async def get_tee_attestation(provider: str = "auto") -> str:
+    """Get a TEE attestation quote from the specified provider (auto, tdx, sev-snp, nitro, gpu)."""
+    result = await rpc_call("tenzro_getTeeAttestation", {"provider": provider})
+    return json.dumps(result)
+
+
+@mcp.tool
+async def verify_tee_attestation_rpc(provider: str, quote_hex: str) -> str:
+    """Verify a TEE attestation quote via RPC. Returns verification result and measurements."""
+    result = await rpc_call("tenzro_verifyTeeAttestation", {"provider": provider, "quote_hex": quote_hex})
+    return json.dumps(result)
+
+
+@mcp.tool
+async def seal_data(plaintext_hex: str, key_id: str) -> str:
+    """Seal data inside a TEE enclave using hardware-bound encryption."""
+    result = await rpc_call("tenzro_sealData", {"plaintext_hex": plaintext_hex, "key_id": key_id})
+    return json.dumps(result)
+
+
+@mcp.tool
+async def unseal_data(ciphertext_hex: str, key_id: str) -> str:
+    """Unseal TEE-sealed data. Only works on the same hardware that sealed it."""
+    result = await rpc_call("tenzro_unsealData", {"ciphertext_hex": ciphertext_hex, "key_id": key_id})
+    return json.dumps(result)
+
+
+@mcp.tool
+async def list_tee_providers() -> str:
+    """List registered TEE providers on the network with their attestation status."""
+    result = await rpc_call("tenzro_listTeeProviders", [])
+    return json.dumps(result)
+
+
+# ---------------------------------------------------------------------------
+# ZK (3 tools)
+# ---------------------------------------------------------------------------
+
+
+@mcp.tool
+async def create_zk_proof(circuit: str, inputs: str) -> str:
+    """Create a zero-knowledge proof for the given circuit and inputs (JSON)."""
+    result = await rpc_call("tenzro_createZkProof", {"circuit": circuit, "inputs": inputs})
+    return json.dumps(result)
+
+
+@mcp.tool
+async def generate_proving_key(circuit: str) -> str:
+    """Generate a proving key for a ZK circuit (Groth16 on BN254)."""
+    result = await rpc_call("tenzro_generateProvingKey", {"circuit": circuit})
+    return json.dumps(result)
+
+
+@mcp.tool
+async def list_zk_circuits() -> str:
+    """List available ZK circuits (InferenceVerification, SettlementProof, IdentityProof)."""
+    result = await rpc_call("tenzro_listZkCircuits", [])
+    return json.dumps(result)
+
+
+# ---------------------------------------------------------------------------
+# Custody (9 tools)
+# ---------------------------------------------------------------------------
+
+
+@mcp.tool
+async def create_mpc_wallet(threshold: int = 2, total_shares: int = 3, key_type: str = "ed25519") -> str:
+    """Create an MPC threshold wallet with the specified threshold and share count."""
+    result = await rpc_call("tenzro_createMpcWallet", {"threshold": threshold, "total_shares": total_shares, "key_type": key_type})
+    return json.dumps(result)
+
+
+@mcp.tool
+async def export_keystore(address: str, password: str) -> str:
+    """Export an encrypted keystore file (Argon2id KDF) for a wallet address."""
+    result = await rpc_call("tenzro_exportKeystore", {"address": address, "password": password})
+    return json.dumps(result)
+
+
+@mcp.tool
+async def import_keystore(keystore_json: str, password: str) -> str:
+    """Import a wallet from an encrypted keystore file."""
+    result = await rpc_call("tenzro_importKeystore", {"keystore_json": keystore_json, "password": password})
+    return json.dumps(result)
+
+
+@mcp.tool
+async def get_key_shares(address: str) -> str:
+    """Get the MPC key share configuration for a wallet (threshold, total, share indices)."""
+    result = await rpc_call("tenzro_getKeyShares", {"address": address})
+    return json.dumps(result)
+
+
+@mcp.tool
+async def rotate_keys(address: str) -> str:
+    """Rotate the MPC key shares for a wallet without changing the address."""
+    result = await rpc_call("tenzro_rotateKeys", {"address": address})
+    return json.dumps(result)
+
+
+@mcp.tool
+async def set_spending_limits(address: str, daily_limit: str, per_tx_limit: str) -> str:
+    """Set daily and per-transaction spending limits for a wallet."""
+    result = await rpc_call("tenzro_setSpendingLimits", {"address": address, "daily_limit": daily_limit, "per_tx_limit": per_tx_limit})
+    return json.dumps(result)
+
+
+@mcp.tool
+async def get_spending_limits(address: str) -> str:
+    """Get the current spending limits and usage for a wallet."""
+    result = await rpc_call("tenzro_getSpendingLimits", {"address": address})
+    return json.dumps(result)
+
+
+@mcp.tool
+async def authorize_session(address: str, duration_secs: int, max_amount: str) -> str:
+    """Create a time-limited session key for automated transactions."""
+    result = await rpc_call("tenzro_authorizeSession", {"address": address, "duration_secs": duration_secs, "max_amount": max_amount})
+    return json.dumps(result)
+
+
+@mcp.tool
+async def revoke_session(address: str, session_id: str) -> str:
+    """Revoke an active session key for a wallet."""
+    result = await rpc_call("tenzro_revokeSession", {"address": address, "session_id": session_id})
+    return json.dumps(result)
+
+
+# ---------------------------------------------------------------------------
+# App (6 tools)
+# ---------------------------------------------------------------------------
+
+
+@mcp.tool
+async def register_app(name: str, description: str, callback_url: str = None) -> str:
+    """Register an application to use Tenzro custody and wallet services."""
+    params = {"name": name, "description": description}
+    if callback_url:
+        params["callback_url"] = callback_url
+    result = await rpc_call("tenzro_registerApp", params)
+    return json.dumps(result)
+
+
+@mcp.tool
+async def create_user_wallet(app_id: str, user_id: str, key_type: str = "ed25519") -> str:
+    """Create a custodial wallet for an app user. The app manages the key shares."""
+    result = await rpc_call("tenzro_createUserWallet", {"app_id": app_id, "user_id": user_id, "key_type": key_type})
+    return json.dumps(result)
+
+
+@mcp.tool
+async def fund_user_wallet(app_id: str, user_id: str, amount: str) -> str:
+    """Fund a user wallet from the app treasury."""
+    result = await rpc_call("tenzro_fundUserWallet", {"app_id": app_id, "user_id": user_id, "amount": amount})
+    return json.dumps(result)
+
+
+@mcp.tool
+async def list_user_wallets(app_id: str) -> str:
+    """List all user wallets managed by an application."""
+    result = await rpc_call("tenzro_listUserWallets", {"app_id": app_id})
+    return json.dumps(result)
+
+
+@mcp.tool
+async def sponsor_transaction(app_id: str, user_address: str, tx_data: str) -> str:
+    """Sponsor a transaction for a user (app pays gas via paymaster)."""
+    result = await rpc_call("tenzro_sponsorTransaction", {"app_id": app_id, "user_address": user_address, "tx_data": tx_data})
+    return json.dumps(result)
+
+
+@mcp.tool
+async def get_usage_stats(app_id: str) -> str:
+    """Get usage statistics for an application (wallets, transactions, gas spent)."""
+    result = await rpc_call("tenzro_getUsageStats", {"app_id": app_id})
+    return json.dumps(result)
+
+
+# ---------------------------------------------------------------------------
+# Contract Encoding (2 tools)
+# ---------------------------------------------------------------------------
+
+
+@mcp.tool
+async def encode_function(abi_json: str, function_name: str, args: str) -> str:
+    """ABI-encode a smart contract function call. Returns hex-encoded calldata."""
+    result = await rpc_call("tenzro_encodeFunction", {"abi_json": abi_json, "function_name": function_name, "args": args})
+    return json.dumps(result)
+
+
+@mcp.tool
+async def decode_result(abi_json: str, function_name: str, data_hex: str) -> str:
+    """ABI-decode the return data from a smart contract call."""
+    result = await rpc_call("tenzro_decodeResult", {"abi_json": abi_json, "function_name": function_name, "data_hex": data_hex})
+    return json.dumps(result)
+
+
+# ---------------------------------------------------------------------------
+# Streaming (2 tools)
+# ---------------------------------------------------------------------------
+
+
+@mcp.tool
+async def chat_stream(model: str, message: str, max_tokens: int = 1024) -> str:
+    """Send a chat completion request and stream the response token by token."""
+    result = await rpc_call("tenzro_chatStream", {"model": model, "message": message, "max_tokens": max_tokens})
+    return json.dumps(result)
+
+
+@mcp.tool
+async def subscribe_events_stream(filter: str = "all") -> str:
+    """Subscribe to real-time blockchain events. Returns a subscription ID for streaming."""
+    result = await rpc_call("tenzro_subscribeEventsStream", {"filter": filter})
     return json.dumps(result)
 
 
