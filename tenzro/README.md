@@ -3,11 +3,11 @@
 [![License](https://img.shields.io/badge/license-Apache--2.0-green)](../LICENSE)
 [![MCP](https://img.shields.io/badge/MCP-2024--11--05-blue)](https://modelcontextprotocol.io)
 
-Tenzro L1 blockchain MCP server — 146 tools for wallets, identity, tokens, NFTs, agents, governance, bridge, AI inference, crypto, TEE, ZK proofs, and key custody.
+Tenzro L1 blockchain MCP server — 148 tools for wallets, identity, tokens, NFTs, agents, governance, bridge, AI inference, crypto, TEE, ZK proofs, VRF (RFC 9381), and key custody.
 
 **Live:** `https://mcp.tenzro.network/mcp`
 
-## Tools (146)
+## Tools (148)
 
 | Category | Count | Highlights |
 |----------|-------|-----------|
@@ -24,7 +24,7 @@ Tenzro L1 blockchain MCP server — 146 tools for wallets, identity, tokens, NFT
 | NFTs | 6 | create_collection, mint, transfer, list |
 | Compliance | 3 | check, register, freeze |
 | Canton | 3 | list_domains, list_contracts, submit_command |
-| Verification | 1 | verify_zk_proof |
+| Verification | 3 | verify_zk_proof, verify_vrf_proof, generate_vrf_proof |
 | Events | 3 | get_events, subscribe, register_webhook |
 | Network | 1 | get_node_status |
 | Blocks | 2 | get_block, get_transaction |

@@ -10,7 +10,7 @@ Open-source [Model Context Protocol](https://modelcontextprotocol.io) servers fo
 
 | Server | Tools | Description | Live Endpoint |
 |--------|-------|-------------|--------------|
-| [Tenzro](tenzro/) | 146 | Tenzro L1 — wallets, identity, tokens, NFTs, agents, crypto, TEE, ZK, custody | `mcp.tenzro.network/mcp` |
+| [Tenzro](tenzro/) | 148 | Tenzro L1 — wallets, identity, tokens, NFTs, agents, crypto, TEE, ZK, VRF (RFC 9381), custody | `mcp.tenzro.network/mcp` |
 | [Solana](solana/) | 14 | Jupiter swaps, SPL tokens, Metaplex NFTs, staking, SNS | `solana-mcp.tenzro.network/mcp` |
 | [Ethereum](ethereum/) | 16 | Gas, ENS, ERC-20, EAS attestations, ERC-8004 agents | `ethereum-mcp.tenzro.network/mcp` |
 | [Canton](canton/) | 14 | DAML contracts, CIP-56 tokens, DvP settlement | `canton-mcp.tenzro.network/mcp` |
@@ -18,7 +18,7 @@ Open-source [Model Context Protocol](https://modelcontextprotocol.io) servers fo
 | [Chainlink](chainlink/) | 20 | CCIP, data feeds, VRF, automation, Functions | `chainlink-mcp.tenzro.network/mcp` |
 | [LI.FI](lifi/) | 9 | Cross-chain aggregator — 66 chains, quotes, routes, swaps | `lifi-mcp.tenzro.network/mcp` |
 
-**Total: 239 tools across 7 servers**
+**Total: 241 tools across 7 servers**
 
 Also integrates with official hosted MCPs:
 - [deBridge](https://agents.debridge.com/mcp) — 5 tools (cross-chain DLN swaps)
